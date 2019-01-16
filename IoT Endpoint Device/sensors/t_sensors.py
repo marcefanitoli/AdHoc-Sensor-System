@@ -24,7 +24,8 @@ class ds18x20_setup:
         for rom in self.devices:
             data += [str(self.data.read_temp(rom))]
         data = ",".join(data)
-        return self.data
+        return data
 
     def pre_measure(self):
         return self.data.convert_temp()
+

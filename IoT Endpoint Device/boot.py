@@ -1,4 +1,3 @@
-
 # This file is executed on every boot (including wake-boot from deepsleep)
 try:
     import usocket as socket
@@ -10,6 +9,8 @@ import network
 import esp
 import gc
 
+
+import webrepl
 HOST_NAME = 'SENSOR1'
 WIRELESS_ACCESS_POINT = 'Stardust'
 PASSWORD = '***REMOVED***'
@@ -26,3 +27,4 @@ while nic.isconnected() is False:
 
 print('Connection successful')
 print(nic.ifconfig())
+webrepl.start()

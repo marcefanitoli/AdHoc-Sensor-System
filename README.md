@@ -5,4 +5,4 @@ This project seeks to explore the use of wireless microchips in home analysis. I
 
 
 IoT Endpoint Device - device with sensor or actuator that listens for RESTful requests
-Server - device which queries IoT endpoints, stores and plots the data. Potentaly offering it as a website.
+Server - device which queries IoT endpoints, stores and plots the data. Potentially offering it as a website.

@@ -12,15 +12,15 @@ class plot:
         self.tmin = 100
         self.n = 0
 
-    def add_sensor(self, name, address, color):
-        self.sensor_list += [{"name": name, "address": address, "last_data": None, "color": color}]
+    def add_sensor(self, name, address, color, constant_offset):
+        self.sensor_list += [{"name": name, "address": address, "last_data": None, "color": color, "constant_offset": constant_offset}]
 
     def __get_request__(self, item):
         requests.ReadTimeout = 1.9
         requests.Timeout = 1.6
         requests.ConnectTimeout = 1.4
         data = requests.get(item["address"], timeout=1.8)
-        return float(data.text)
+        return float(data.text) + item["constant_offset"]
 
     def __update_plots__(self, item, data):
         if item["last_data"] is None:
@@ -31,6 +31,10 @@ class plot:
         plt.plot([self.n-1, self.n], [item["last_data"], data], marker='', markersize=12, color=item["color"], linewidth=2, linestyle='dotted', label=item["name"])
         # color='blue', markerfacecolor='blue',
         item["last_data"] = data
+
+    def __update_logs__(self, n, item, data):
+        with open("log.csv", "a") as fp:
+            fp.write(str(n) +"," + item["name"] + "," + str(data) + "\n")
 
     def __run_once__(self):
         plt.legend()
@@ -43,6 +47,7 @@ class plot:
                 try:
                     data = self.__get_request__(item)
                     self.__update_plots__(item, data)
+                    self.__update_logs__(self.n, item, data)
                 except requests.exceptions.ReadTimeout:
                     print("read timed out for: " + item["name"])
                 except requests.ConnectionError:
